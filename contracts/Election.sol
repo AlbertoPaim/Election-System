@@ -3,7 +3,7 @@ pragma solidity ^0.8.28;
 
 contract Election {
     address public admin;
-    mapping(uint => Candidate) public Candidates;
+    mapping(uint => Candidate) public candidates;
     mapping(address => bool) hasVoted;
     VotingState public votingState;
     uint public totalCandidates;
@@ -35,7 +35,7 @@ contract Election {
 
         Candidate memory newCandidate = Candidate(totalCandidates, _name, _description, 0);
 
-        Candidates[totalCandidates] = newCandidate;
+        candidates[totalCandidates] = newCandidate;
 
         totalCandidates++;
     }
@@ -45,5 +45,15 @@ contract Election {
         require(totalCandidates > 1, unicode'Para começar eleição precisam de no minimo 2 candidatos');
         require(votingState == VotingState.Registration, unicode'A eleição já esta em andamento ou encerrada');
         votingState = VotingState.Voting;
+    }
+
+    function Vote(uint _candidateNumber) public {
+        require(votingState == VotingState.Voting, unicode'A fase de votação ainda não começou ou já foi encerrada');
+        require(!(hasVoted[msg.sender]), unicode'Cada pessoa só pode votar uma única vez!');
+        require(_candidateNumber < totalCandidates, unicode'Candidato inválido');
+
+        candidates[_candidateNumber].voteCount++;
+
+        hasVoted[msg.sender] = true;
     }
 }
