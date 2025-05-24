@@ -63,4 +63,18 @@ contract Election {
 
         votingState = VotingState.Ended;
     }
+
+    function getResult() public view returns (string memory, uint) {
+        uint totalVotes;
+        string memory winner;
+
+        for (uint i; i < totalCandidates; i++) {
+            if (candidates[i].voteCount > totalVotes) {
+                totalVotes = candidates[i].voteCount;
+                winner = candidates[i].name;
+            }
+        }
+
+        return (winner, totalVotes);
+    }
 }
