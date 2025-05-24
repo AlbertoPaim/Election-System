@@ -56,4 +56,11 @@ contract Election {
 
         hasVoted[msg.sender] = true;
     }
+
+    function EndVoting() public {
+        require(msg.sender == admin, unicode'Somente o administrador pode encerrar a votação');
+        require(votingState == VotingState.Voting, unicode'Votação em fase de registro ou já encerrada');
+
+        votingState = VotingState.Ended;
+    }
 }
