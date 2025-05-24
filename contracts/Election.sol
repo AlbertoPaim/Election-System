@@ -39,4 +39,11 @@ contract Election {
 
         totalCandidates++;
     }
+
+    function StartingVote() public {
+        require(msg.sender == admin, unicode'Somente o administrador pode começar votação');
+        require(totalCandidates > 1, unicode'Para começar eleição precisam de no minimo 2 candidatos');
+        require(votingState == VotingState.Registration, unicode'A eleição já esta em andamento ou encerrada');
+        votingState = VotingState.Voting;
+    }
 }
