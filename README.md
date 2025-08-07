@@ -1,13 +1,38 @@
-# Sample Hardhat Project
+# 🗳️ Election Smart Contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a Hardhat Ignition module that deploys that contract.
+Este projeto implementa um contrato inteligente de **eleição descentralizada** utilizando Solidity.  
+Permite que um administrador cadastre candidatos, inicie e encerre a votação, e que usuários votem de forma segura (somente uma vez).
 
-Try running some of the following tasks:
+---
 
-```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat ignition deploy ./ignition/modules/Lock.ts
-```
+## 📋 Funcionalidades
+
+- **Cadastro de candidatos** (somente pelo administrador)
+- **Controle de fases da eleição**:
+  - Registro
+  - Votação
+  - Encerrada
+- **Sistema de votação seguro**:
+  - Cada endereço só pode votar uma vez
+  - Apenas candidatos válidos podem receber votos
+- **Exibição do resultado final** (nome do vencedor e quantidade de votos)
+
+---
+
+## ⚙️ Estrutura do Contrato
+
+### **Variáveis principais**
+- `admin`: endereço do administrador da eleição
+- `candidates`: mapeamento de candidatos cadastrados
+- `hasVoted`: mapeamento para controlar quem já votou
+- `votingState`: estado atual da eleição (`Registration`, `Voting`, `Ended`)
+- `totalCandidates`: contador de candidatos
+
+### **Estruturas**
+```solidity
+struct Candidate {
+    uint id;
+    string name;
+    string description;
+    uint voteCount;
+}
